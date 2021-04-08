@@ -15,7 +15,7 @@ This folder contains all functions and mapping files for to run the analysis
 ## input
 THIS FOLDER IS NOT ON GITHUB. It contains the raw .json files as exported from telegram (exceeding 100mb/file limit of github).
 
-The raw input data can be downloaded here and added to the local clone to run the pre-processing steps locally: https://drive.infomaniak.com/app/share/249519/35afb329-f2ea-46f4-b770-2dd6d7c2883d
+The raw input data can be downloaded here and added to the local clone to run the pre-processing steps: https://drive.infomaniak.com/app/share/249519/35afb329-f2ea-46f4-b770-2dd6d7c2883d
 
 # Further information
 This analysis was conducted as part of the course "Social Data Science" at ETH Zürich. All code and data published is pulic and can be used for further analysis.
