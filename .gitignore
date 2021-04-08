@@ -1,3 +1,6 @@
+#don't include the input files
+*.json
+
 # History files
 .Rhistory
 .Rapp.history
