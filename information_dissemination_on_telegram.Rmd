@@ -34,6 +34,7 @@ library(stringr)
 library(tinytex)
 library(formatR)
 library(knitr)
+library(rmarkdown)
 ```
 
 ```{r utils, eval = TRUE, include = FALSE, echo = FALSE, message = FALSE, warning = FALSE, tidy = TRUE}
@@ -50,23 +51,23 @@ source("utils/functions.R")
   
 # Abstract
 
-This report is an analysis of the origin and dissemination of information posted in and forwarded to four corona skeptic groups on Telegram. The analysis follows the literature on chambers on social media and uses publicly available data from Telegram.  The hypothesis to be tested is, that links from alternative media are more likely to be forwarded to corona skeptic groups than links from traditional media. The results suggest that there is no evidence for this hypothesis.
+This report is an analysis of the origin and dissemination of information posted in four corona skeptic groups on Telegram. The analysis follows the literature on echo chambers on social media, using publicly available data from Telegram.  The hypothesis is, that links from alternative media are more likely to be forwarded to corona skeptic groups than links from traditional media. The results suggest that there is no evidence for this hypothesis.
 
 
 
 # Motivation
 
-The global COVID-19 pandemic has ravaged the world from early 2020 until the publication of this study in April 2021. As per 8 April 2021, the number of deaths in Switzerland, Austria and Germany from the pandemic is around 100'000, according to the platform "Our World in Data". This death-toll occurred in spite of severe restrictions to public life in order to curb the further spread of the virus in all three countries [@OurWorldinData.482021]. Since early in the pandemic, the term "corona-skeptics" has been widely used in the media for individuals and communities claiming that the health impact of the pandemic is overstated by governments and media. Corona skeptics are of the opinion, that the damages caused and costs incurred by the counter-measures, such as lock-downs, testing and immunizations, outweigh their benefits. They are generally skeptical of traditional media reports, which they believe to be focusing too much on the adverse effects of the pandemic and not scrutinizing enough the damage caused by the respective counter-measures. As an example, the first message posted in the Telegram group "Corona Virus Informationen Diskussion", one of the later analyzed groups, reads as follows:
+The global COVID-19 pandemic has ravaged the world from early 2020 until the publication of this report in April 2021. As per 8 April 2021, the number of deaths in Switzerland, Austria and Germany from the pandemic is around 100'000, according to the platform "Our World in Data". This death-toll occurred in spite of severe restrictions to public life in order to curb the further spread of the virus in all three countries [@OurWorldinData.2021]. Since early in the pandemic, the term "corona-skeptics" has been widely used in the media for individuals and communities claiming that the health impact of the pandemic is overstated by governments and traditional media. Corona skeptics are of the opinion, that the damages caused and costs incurred by the counter-measures, such as lock-downs, testing and immunizations, outweigh their benefits. They are generally skeptical of traditional media reports, which they believe to be focusing too much on the adverse effects of the pandemic and not scrutinizing enough the damage caused by the respective counter-measures. As an example, the first message posted in the Telegram group "Corona Virus Informationen Diskussion" reads as follows:
 
-"Hallo an alle lieben Menschen! Diese Gruppe dient zur Information rund um das Coronavirus! Diese Gruppe soll gegen die Panikmache der Medien und die große Desinfomraton helfen! Lasst Euch nicht von den Medien und Pharmakonzernen in Panik versetzen! Der Cornavirus ist bei weitem nicht so gefährlich, wie uns gesagt wird!"
+>"Hallo an alle lieben Menschen! Diese Gruppe dient zur Information rund um das Coronavirus! Diese Gruppe soll gegen die Panikmache der Medien und die große Desinfomraton helfen! Lasst Euch nicht von den Medien und Pharmakonzernen in Panik versetzen! Der Cornavirus ist bei weitem nicht so gefährlich, wie uns gesagt wird!"
 
 It has to be noted that to the knowledge of the authors of this report, there has not been an attempt by academia to properly define the term. Thus the loose definition above is a suggestion of the authors and and should be refined for further studies.
 
-As early as May 2020, the Newspaper "Süddeutsche Zeitung" has released a report, revealing the importance of the platform Telegram for the corona virus skeptic communities (@Bruhl.21052020). As @Rogers.2020 shows, the "deplatforming" of extreme and anti-establishment actors from other popular platforms has increasingly led to a migration of such individuals to Telegram. This raises the question, what information reaches these corona skeptic groups. The comprehensive literature on echo chambers in social media suggests, that the mechanisms of social media increase the risk, that users are only confronted with contents they agree with while other opinions do not reach them [@Garimella.2018].
+As early as May 2020, the Newspaper "Süddeutsche Zeitung" has released a report, revealing the importance of the platform Telegram for the corona virus skeptic communities (@Bruhl.2020). As @Rogers.2020 shows, the "deplatforming" of extreme and anti-establishment actors from other popular platforms has increasingly led to a migration of such individuals to Telegram. This raises the question of what information reaches these corona skeptic groups. The comprehensive literature on echo chambers in social media suggests, that the mechanisms of social media increase the risk, that users are only confronted with contents they agree with while other opinions do not reach them [@Garimella.2018].
 
-As there is a big distrust among the corona skeptic communities with in traditional media and government agencies (commonly called traditional media from here on), the existence of an echo chamber could suggest that information posted on Telegram from such traditional media is less likely to be forwarded in corona skeptic groups than contents from alternative sources.
+As there is a big distrust among the corona skeptic communities with in traditional media and government agencies (collectively called traditional media from here on), the existence of an echo chamber could suggest that information posted on Telegram from such traditional media is less likely to be forwarded in corona skeptic groups than contents from alternative sources.
 
-The questions addressed in the report are whether information from alternative media are more likely to reach the corona skeptic communities on Telegram than information from traditional media sources. Further, it is alanyzed whether information from alternative media is more likely to be forwarded among these communities in these communities than information from traditional media. This would suggest, that campaigns aimed at increasing awareness on the impact of the pandemic are less effective if the content is posted from traditional sources, as they are less likely to be further spreas in the network. With that, this and further analysis could provide valuable insights for the organizaing of such campaigns in the future.
+The questions addressed in the report are whether information from alternative media are more likely to reach the corona skeptic communities on Telegram than information from traditional media sources. Further, it is alanyzed whether information from alternative media is more likely to be forwarded among these communities than information from traditional media. This would suggest, that campaigns aimed at increasing awareness on the impact of the pandemic are less effective if the content is posted from traditional sources, as they are less likely to be further spreas in the network. With that, this and further analysis could provide valuable insights for the design of such campaigns in the future.
 
 
 
@@ -75,12 +76,12 @@ The questions addressed in the report are whether information from alternative m
 
 ## Changes from the intitial project plan
 
-The original idea of this project was to analyze the links posted in various corona skeptic groups on Telegram. The plan was to see how likely links from domains connected to right-wing politics and conspiracy theories are posted in the corona skeptic groups and how likely they are to be forwarded from one group to another.
+The original idea of this project was to analyze how likely links from domains connected to right-wing politics and conspiracy theories are posted in the corona skeptic groups and how likely they are to be forwarded from one group to another.
 
 Over the course of the project, there have been two major adjustments:
 
-1. The focus was extended from domains connected to right-wing politics and conspiracy theories to domains from alternative media sources in general, including blogs, self-declared alternative media and sources commonly associated with any of the extreme ends of the political spectrum.
-2. Due to the workings of Telegram, messages cannot be forwarded from one group to another, but only form channels to groups or channels to channels (more on Telegram below). Thus, instead of looking at how links were forwarded between groups, the analysis focuses on forwards from channels to groups. An introduction of the workings of welegram and the difference between groups and channels can be found in the appendix.
+1. The focus was extended from domains connected to right-wing politics and conspiracy theories to domains from alternative media sources in general, including blogs, self-declared alternative media outlets and sources commonly associated with any of the extreme ends of the political spectrum.
+2. Due to the workings of Telegram, messages cannot be forwarded from one group to another, but only form channels to groups or channels to channels. Thus, instead of looking at how links were forwarded between groups, the analysis focuses on forwards from channels to groups. An introduction of the workings of Telegram and the difference between groups and channels can be found in the appendix.
 
 
 ## Project Outline
@@ -97,30 +98,31 @@ During this project, the following main tasks have been completed:
 
 ## Scope
 
-The analysis focuses on a one year timespan from 25.2.2020 to 25.2.2021. The analyzed groups are all in German, thus the analysis is restricted to the DACH region. The selected groups are:
+The analysis focuses on a one year timespan from 25.2.2020 to 25.2.2021. The analyzed groups are all in German, thus the analysis is restricted to the DACH region. The selected groups and their number of members per 24/3/2021 are:
 
-- "Corona Infos und Fakten": 216 Members 
-- "Corona Rebellen": 4'714 Members
-- "Corona Rebellen Chat": 1'829 Members (Discussion Room of the "Corona Rebellen Schweiz" Channel)
-- "Corona Virus Informationen Diskussion": 2'598 Members (Discussion Room of the "Corona Virus Informationen" Channel)
-(Member numebr as per 24/03/2021)
+- "Corona Infos und Fakten": 216 members 
+- "Corona Rebellen": 4714 members
+- "Corona Rebellen Chat": 1829 members (discussion room of the "Corona Rebellen Schweiz" channel)
+- "Corona Virus Informationen Diskussion": 2598 members (discussion room of the "Corona Virus Informationen" channel)
 
-Proper definitions of terms such as "corona sceptic communities" and categories like "alternative media" and "traditional  media" as well an reproducible process for assigning the domains to any of the latter two categories are all out of scope of this report. Is is strongly suggested that any further analysis takes on these tasks.
+Proper definitions of terms such as "corona skeptic communities", and categories like "alternative media" and "traditional  media" as well a reproducible process for assigning the domains to any of the latter two categories are all out of scope of this report. Is is strongly suggested that any further analysis takes on these tasks.
 
 
 ## Reproducibility
 
-All data and code used for this report is publically available on github [@GitHub.482021].
+All data and code used for this report is accessible on github [@GitHub.2021].
+
+
 
 # Data retrieval
 
-All data analyzed for this report is publicly available through the export function on Telegram. Any public group and channel histories can be downloaded as JSON files. The relevant data for this report are made available in the following github repository [LINK github].
+All data analyzed for this report is publicly available through the export function on Telegram. Any public group and channel histories can be downloaded as JSON files. The relevant data for this report are made available on github and kdrive [see README on @GitHub.2021].
 
 
 
 # Data processing
 
-First, the complete chat history of the four groups in scope of this analysis is exported from Telegram. The data is pre-precessed, the links are extracted from the messages and reduced to the domains (e.g. "https://github.com/dipfi/corona-skeptic-information-on-Telegram", would be reduced to "github.com").
+First, the complete chat history of the four groups in scope (more details in section 3.3) is exported from Telegram. The data is pre-processed, and the links are extracted from the messages and reduced to the domains (e.g. "https://github.com/dipfi/corona-skeptic-information-on-Telegram", is reduced to "github.com").
 ```{r prepare_groups, eval = FALSE, include = FALSE, echo = TRUE, message = FALSE, warning = FALSE, tidy = TRUE}
 
 # read all Telegram messages
@@ -146,6 +148,7 @@ links_groups <- setDT(readRDS("output/groups/links.rds")[date %between% c("2020-
 
 
 The channels most important for these groups were identified according to the following criteria:
+
 - count forwarded links by origin (channels) for each of the groups 
 - restrict to channels with at least 50 forwards in at least one of the groups, such that calculating a meaningful forward-ratio is possible
 - restrict to channels which are among the 10 most important channels for at least one of the four groups. This ensures that channels are not only selected by their importance for the largest group.
@@ -170,7 +173,7 @@ write.csv(important_channels, "output/channels/important_channels.csv")
 ```
 
 
-This leaves to a sample of 28 channels. The histories of 24 of them were available for exporting and were subsequently retrieved from Telegram. Again, the messages are pre-processend and links are extracted from the messages and reduced to the domains. 
+This leaves to a sample of 28 channels. The histories of 24 of them were available for exporting and were subsequently retrieved from Telegram. A list of all groups and channels can be found in the appendix. Again, the messages are pre-processend and links are extracted from the messages and reduced to the domains. 
 
 ```{r prepare_channels, eval = FALSE, include = FALSE, echo = FALSE, message = FALSE, warning = FALSE, tidy = TRUE}
 #read all Telegram messages
@@ -217,6 +220,7 @@ links_all$channel_type <- ifelse(links_all$channel_type %like% "channel",
 ```
 
 Next, the domains which were most often posted in the 24 channels were identified according to the following logic:
+
 - First, the the set of domains was restricted to the domains which were posted at least 50 times in at least one of the channels. This is to ensure that calculating the forward-ratio at a later stage is meaningful.
 - Next, all the domains which do not belong to the 10 most posted domains in any of the channels were removed. This avoids an over-representation of channels whcih post a large amount of links.
 
@@ -294,7 +298,7 @@ This left a sample of 81 domains, which were assigned to the one of the followin
 - Traditional media: Domains connected to established news agencies, government agencies or scientific institutions.
 - Other: other domains like link-shorteners, archives, event-websites, payment-portals, etc.
 
-Accordint to the above definitions, 30 of the 81 domains are associated with alternative media sources, while 22 are associated with traditional media sources. For the further analysis, the data-set is restricted to links from any one of these 52 domains.
+According to the above definitions, 30 of the 81 domains are associated with alternative media sources, while 22 are associated with traditional media sources. For the further analysis, the data-set is restricted to links from any one of these 52 domains.
 
 The assignment of these links were conducted by the authors without specific expertise or formal and reproducible process in place. For further work, it is suggested to formalize this process and work with experts in media or communication. The list of domains and the assigned categories can be found in the appendix.
 
@@ -302,9 +306,9 @@ The assignment of these links were conducted by the authors without specific exp
 
 # Analysis
 
-The activity in the channels has picked up as soon as the pandemic started in spring 2020 and remained roughly stable over analyzed time-period. The activity in the groups has strongly increased with the second wave of the pandemic in fall 2021. Further details can be read from the plot in the appendix, section "Activity of the groups and channels over timE".
+The activity in the channels has picked up as soon as the pandemic started in spring 2020 and remained roughly stable over analyzed time-period. The activity in the groups has strongly increased with the second wave of the pandemic in fall 2021. Further details can be read from the plot in the appendix, section "Activity of the groups and channels over time".
 
-Some of the channels are extremely important for individual groups. There are for example more than 1000 forwards of such links from the channel "Corona Virus Informationen" for the groups "Corona Virus Informationen Diskussion". This is not surprising, as the group is the official discussion room of the channel in Question. Other channels, such as "Eva Hermann Offiziell" and "Ignaz Bearth" are not as important for individual groups, but have links forwarded to all of them. A network graph for the forward network can be found in the appendix in the section "Forward network from channels to groups".
+Some of the channels are extremely important for individual groups. For example, there are more than 1000 forwards of such links from the channel "Corona Virus Informationen" for the groups "Corona Virus Informationen Diskussion". This is not surprising, as the group is the official discussion room of this channel. Other channels, such as "Eva Hermann Offiziell" and "Ignaz Bearth" are not as important for individual groups, but have links forwarded to all of them. A network graph for the forward network can be found in the appendix in the section "Forward network from channels to groups".
 
 Further, some users post links in multiple of the groups analyzed. Yet, the share of users contributing to multiple groups is small compared to the users contributing in individual channels. For more information, see appendix section "Exploratory analysis of groups".
 
@@ -374,7 +378,7 @@ The mean forward-ratio is almost identical for the two categories.
 
 With this set-up, the actual hypothesis stated at the beginning of the report can now be tested:
 
-Hypothesis: If a link is posted in any of the 24 channels, it is more likely to be forwarded to one of the four groups if it is associated with an alternative media domain than if it is associated with a traditional media domain.
+>If a link is posted in any of the 24 channels, it is more likely to be forwarded to one of the four groups if it is associated with an alternative media domain than if it is associated with a traditional media domain.
 
 With a permutation test, the above hypothesis is tested against the Null that links from alternative media domains are less or equally likely to be forwarded to one of the groups. The conducted test is thus one-sided.
 
@@ -394,21 +398,22 @@ The p-value of the permutation test is close to 0.5. The Null hypothesis is not 
 
 This report suggests that alternative media links are about equally likely to be posted to one of the four corona skeptic groups in the scope of this analysis. Further, there is no evidence that a traditional media link posted in a Telegram channel is less likely to be forwarded to one of the groups than an alternative media link. Thus, here is no immediate indication that contents published in traditional media is less relevant for opinion formation in the corona skeptic groups on Telegram than content published on alternative media websites.
 
-Yet, exploratory analysis of the data has revealed some interesting insights:
+Exploratory analysis of the data has revealed some interesting insights:
+
 - Alternative media links posted in the analyzed groups are more likely to have arrived there by being forwarded from another telegram channel
 - In the channels which are most important for these groups, alternative media links are much more likely to be posted than traditional media links
 
-A possible explanation for the former point is that publishers of alternative media content are themselves often active on Telegram, as suggested by @Rogers.2020. It is possible that they post links to their own blogs on their Telegram channels and forward them to Telegram groups. At the same time, other members of the groups might not otherwise be active on Telegram, as suggested by the "Exploratory analysis of groups" in the appendix. Thus, they are more exposed to traditional media and more likely to post links to such sources. This hypothesis could e.g. be tested by evaluating whether alternative media links are posted by a small group of very active users while traditional media links are more often posted by a large group of less active users
+A possible explanation for the first point is that publishers of alternative media content are themselves often active on Telegram, as suggested by @Rogers.2020. It is possible that they post links to their own blogs on their Telegram channels and forward them to Telegram groups. At the same time, other members of the groups might not otherwise be active on Telegram. Most of the members have only contributed to one of the four groups, as suggested by the "Exploratory analysis of groups" in the appendix. They might be more exposed to traditional media sources outside telegram and more likely to post links to such sources. This hypothesis could e.g. be tested by evaluating whether alternative media links are posted by a small group of very active users while traditional media links are more often posted by a large group of less active users
 
-The latter point could be explained by the fact that many of these channels are directly associated with an alternative media website, such as e.g. a blog. This might explain the high prevalence of alternative media links in the channels.
+The second point could be explained by the fact that many of these channels are directly associated with an alternative media website, such as e.g. a blog. This might explain the high prevalence of alternative media links in the channels.
 
 
 
 # Critique
 
-This analysis shows, that the publicly available data from Telegram lends itself to analysis of dynamics and information dissemination among specific social groups. It can be easily accessed. The code available on the github repository can be used as a template for reading and pre-processing the data, as well as to extract the links.
+This analysis shows, that the publicly available data from Telegram lends itself to analysis of dynamics and information dissemination among specific social groups. It is detailed, publicly available and can be easily accessed. The code available on the github repository can be used as a template for reading and pre-processing the data, as well as to extract the links.
 
-Yet, this project has been very limited in scope, by only looking at four groups, 24 channels and 52 domains. Further, the exclusive focus on the origin of the information only tells part of the story. It would be interesting to assess the sentiment of the discussions around the links from these different sources, as well as the contents of the articles behind.
+Yet, this project has been very limited in scope, by only looking at four groups, 24 channels and 52 domains. Further, the exclusive focus on the origin of the information only tells part of the story. It would be interesting to assess the sentiment of the discussions around the links from these different sources, as well as the contents of the articles behind. A low-hanging fruit would be to incorporate links from platforms like youtube, telegram or twitter in the analysis by assigning them to alternative or traditional media depending on the account, channel or publisher.
 
 As indicated before, concisely defining central terms like "corona skeptic" and working out a proper process for assessing domains to categories was not in scope of this project. This would have to be a central part of future research on this topic.
 
@@ -425,17 +430,15 @@ As indicated before, concisely defining central terms like "corona skeptic" and 
 
 ## Introduction to Telegram
 
-Telegram is a commonly used messenger service [LINK Telegram]. Unlike services like WhatsApp or Signal, it also provides options for public groups and channels (described below). Due to the low level of moderation compared to other services like Twitter, it has recently been increasingly associated with extreme and anti-establishment contents [LINK Rogers].
+Telegram is a commonly used messenger service. Unlike services like WhatsApp or Signal, it also provides options for public groups and channels (@Telegram.2021). Due to the low level of moderation compared to other services like Twitter, it has recently been increasingly associated with extreme and anti-establishment contents [@Rogers.2020].
 
-On Telegram there are two distinct ways of communication: Channels and Groups. 
+On Telegram there are two distinct ways of communication: Channels and groups. 
 
-- Channels are a way for a single user or organization to share messages or links with his followers. Typically, only one user is posting in a channel, while many users are following it.
+- Channels are designed for a single user or organization to share messages or links with his followers. Typically, only one user is posting in a channel, while many users are following it.
 
-- Groups are chat-rooms, where users can interact with each other. Every member of the group has write-access. For some groups, every Telegram user has read-access. We are focusing exclusively on groups and channels with public read-access.
+- Groups are chat-rooms, where users can interact with each other. Every member of the group has write-access. For some groups, every Telegram user has read-access. This report focuses exclusively on groups and channels with public read-access.
 
-All data from public groups and channels can be exported as .json file through the export function provided in the app.
-
-More information can be found in the Telegram FAQ [LINK Telegram FAQ]
+All data from public groups and channels can be exported as  JSON-file through the export function provided in the telegram desktop application.
 
 
 ## Activity of the groups and channels over time
@@ -457,6 +460,7 @@ ggplot(setorder(activity_per_week, date)[1:(nrow(activity_per_week)-length(uniqu
   scale_color_discrete(name = "Type")
 
 ```
+The activity in the channels has picked up as soon as the pandemic started in spring 2020 and remained roughly stable over analyzed time-period. The activity in the groups has strongly increased with the second wave of the pandemic in fall 2021.
 
 
 ## Forward network from channels to groups
@@ -497,10 +501,10 @@ plot(grps_graph_plot)
 ```
 A couple of points become obvious when looking at the above network graph:
 
-1. Content from many channels is forwarded not only to one, but to multiple groups.
+1. Content from many channels is forwarded not only to one, but to multiple groups
 2. There are a few channels of specific interest:
-a) The links posted in the channel "Corona Virus Informationen" is forwarded extremely often to the group "Corona Virus Informationen Diskussion". This is expected, as the group "Corona Virus Informationen Diskussion" is the official discussion thread of the channel in question
-b) Some channels, like "Eva Hermann Offiziell" and "Ignaz Bearth" are a central source of information for multiple groups
+  - The links posted in the channel "Corona Virus Informationen" is forwarded extremely often to the group "Corona Virus Informationen Diskussion". This is expected, as the group "Corona Virus Informationen Diskussion" is the official discussion thread of the channel in question
+  - Some channels, like "Eva Hermann Offiziell" and "Ignaz Bearth" are a central source of information for multiple groups
 
 
 ## Exploratory analysis of groups
@@ -532,10 +536,10 @@ user_per_channel_agg <- unique(msg_groups[,c("user_id", "channel")])[, .(count_c
 
 kable(user_per_channel_agg)
 ```
-Concretely, the group "Corona Infos und Fakten" has a lot less contributors, while "Corona Virus Informationen Diskussion" has a lot more. This is in line with the lower activity shown above.
+Concretely, the group "Corona Infos und Fakten" has a lot less contributors than the others, while "Corona Virus Informationen Diskussion" has the most. This is in line with the lower activity shown above.
 
 
-The graph below shows the different groups by the number of contributors and and shared contributors. A contributor is here defined as a user which posted at least one alternative or traditional media link in the respective groups.
+The graph below shows the different groups by the number of contributors and shared contributors. A contributor is here defined as a user which posted at least one alternative or traditional media link in the respective groups.
 ```{r contributors_plot, eval = TRUE, include = TRUE, echo = FALSE, message = FALSE, warning = FALSE, tidy = TRUE, fig.align = "center", fig.asp = 0.7, out.width="100%"}
 
 #Check for users that are subscribed in multiple channels
@@ -578,7 +582,7 @@ plot(grps_graph_plot)
 
 ```
 
-It can be seen that the group "Corona Infos und Fakten" is isolated (no shared contributors with the other groups). The groups "Corona Rebellen Chat" and "Corona Virus Informationen" share around 30 contributors. This is still only a small fraction of all contributors. We conclude that most users are only actively posting links from traditional or alternative media domains in one of the groups.
+It can be seen that the group "Corona Infos und Fakten" is isolated (no shared contributors with the other groups). The groups "Corona Rebellen Chat" and "Corona Virus Informationen" share around 30 contributors. This is only a small fraction of all contributors. It can be concluded that most users are only actively posting links from traditional or alternative media domains in one of the groups.
 
 
 ## Testing difference in the forward-ratio in groups
@@ -637,5 +641,13 @@ The p_value is significantly below 0.05, thus the Null hypothesis that the forwa
 
 ```{r media_list, eval = TRUE, include = TRUE, echo = FALSE, message = FALSE, warning = FALSE, tidy = TRUE, results = 'asis'}
 kable(media)
+```
+
+## List of groups and channels relevant for this report
+
+```{r channel_list, eval = TRUE, include = TRUE, echo = FALSE, message = FALSE, warning = FALSE, tidy = TRUE, results = 'asis'}
+
+
+kable(unique(links_all[,c("channel", "channel_type")]))
 ```
 
